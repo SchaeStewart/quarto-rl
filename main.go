@@ -1,7 +1,9 @@
 package main
 
+import "os"
+
 func main() {
 	game := NewGame()
 
-	game.Loop()
+	game.Loop(os.Stdin)
 }

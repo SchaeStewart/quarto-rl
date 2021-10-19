@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"os"
+	"io"
 	"strconv"
 )
 
@@ -72,6 +72,7 @@ func (g *Game) PrintBoard() {
 func (g *Game) IncrementPlayer() {
 	if g.CurrentPlayer == Player1 {
 		g.CurrentPlayer = Player2
+		return
 	}
 	g.CurrentPlayer = Player1
 }
@@ -139,8 +140,8 @@ func GetLocationFromInput(reader *bufio.Reader) (x, y int) {
 	return int(x64), int(y64)
 }
 
-func (g *Game) Loop() {
-	reader := bufio.NewReader(os.Stdin)
+func (g *Game) Loop(rd io.Reader) {
+	reader := bufio.NewReader(rd)
 	// TODO: put setting initial piece into function
 	piece := GetPieceFromInput(reader)
 	if piece == nil {
@@ -150,15 +151,33 @@ func (g *Game) Loop() {
 	g.CurrentPiece = piece
 	g.IncrementPlayer()
 
-	fmt.Println("first piece to place", piece)
 	for !g.Board.IsWon() {
+		// Start turn
 		fmt.Println("Current player:", g.CurrentPlayer)
+		fmt.Println("Current piece:", g.CurrentPiece)
 		g.Board.PrintBoard()
-		x, y := GetLocationFromInput(reader)
-		nextPiece := GetPieceFromInput(reader)
-		g.Board.PrintBoard()
-		g.Play(x, y, *nextPiece)
-	}
 
+		// Play piece
+		x, y := GetLocationFromInput(reader)
+		if err := g.PlayPiece(x, y); err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
+		g.Board.PrintBoard()
+
+		if (g.Board.IsWon()) {
+			continue
+		}
+
+		// Select next piece
+		nextPiece := GetPieceFromInput(reader)
+		if err := g.SelectPiece(*nextPiece); err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
+		g.IncrementPlayer()
+		g.Board.PrintBoard()
+		fmt.Println(g.Board.IsWon())
+	}
 	fmt.Println("Winning player:", g.CurrentPlayer)
 }
