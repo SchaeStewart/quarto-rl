@@ -31,14 +31,14 @@ func TestBoardString(t *testing.T) {
 
 	emptyBoardString := "|0000|0000|0000|0000|\n|0000|0000|0000|0000|\n|0000|0000|0000|0000|\n|0000|0000|0000|0000|\n"
 
-	if (b.String() != emptyBoardString) {
+	if b.String() != emptyBoardString {
 		t.Errorf("expected empty board instead got %s", b.String())
 	}
 
 	nonEmptyBoardString := "|TBFR|0000|0000|0000|\n|0000|0000|0000|0000|\n|0000|0000|0000|0000|\n|0000|0000|0000|TBFC|\n"
 	b.SetPiece(0, 0, &Piece{true, true, true, true})
 	b.SetPiece(3, 3, &Piece{true, true, true, false})
-	if (b.String() != nonEmptyBoardString) {
+	if b.String() != nonEmptyBoardString {
 		t.Errorf("expected board to be:\n%s \ninstead got:\n%s", nonEmptyBoardString, b.String())
 	}
 }
