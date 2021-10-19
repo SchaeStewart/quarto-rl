@@ -48,6 +48,25 @@ func IsIdentical(p, q Piece) bool {
 		p.Square == q.Square
 }
 
+func ShareAttributes(p1, p2, p3, p4 *Piece) bool {
+	if p1 == nil || p2 == nil || p3 == nil || p4 == nil {
+		return false
+	}
+	if p1.Tall == p2.Tall && p1.Tall == p3.Tall && p1.Tall == p4.Tall {
+		return true
+	}
+	if p1.Square == p2.Square && p1.Square == p3.Square && p1.Square == p4.Square {
+		return true
+	}
+	if p1.Black == p2.Black && p1.Black == p3.Black && p1.Black == p4.Black {
+		return true
+	}
+	if p1.Flat == p2.Flat && p1.Flat == p3.Flat && p1.Flat == p4.Flat {
+		return true
+	}
+	return false
+}
+
 func CreatePieceSet() []Piece {
 	return []Piece{
 		{true, true, true, true},
