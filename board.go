@@ -50,11 +50,9 @@ func (bx *Board) IsWon() bool {
 		}
 	}
 
-	// diaganal 
-	if ShareAttributes(b[0][0], b[1][1], b[2][2], b[3][3]) {
-		return true
-	}
-	if ShareAttributes(b[0][3], b[1][2], b[2][1], b[3][0]) {
+	// diaganal
+	if ShareAttributes(b[0][0], b[1][1], b[2][2], b[3][3]) ||
+		ShareAttributes(b[0][3], b[1][2], b[2][1], b[3][0]) {
 		return true
 	}
 

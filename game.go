@@ -105,7 +105,7 @@ func GetPieceFromInput(reader *bufio.Reader) *Piece {
 		GetPieceFromInput(reader)
 	}
 	return p
-} 
+}
 
 func GetLocationFromInput(reader *bufio.Reader) (x, y int) {
 	fmt.Print("Enter your X value: ")
@@ -131,13 +131,13 @@ func GetLocationFromInput(reader *bufio.Reader) (x, y int) {
 		return GetLocationFromInput(reader)
 	}
 
-	if (x > 3 || y > 3 || x < 0 || y < 0) {
+	if x > 3 || y > 3 || x < 0 || y < 0 {
 		fmt.Println("value must be 0 - 3")
 		return GetLocationFromInput(reader)
 	}
 
 	return int(x64), int(y64)
-} 
+}
 
 func (g *Game) Loop() {
 	reader := bufio.NewReader(os.Stdin)
@@ -157,7 +157,7 @@ func (g *Game) Loop() {
 		x, y := GetLocationFromInput(reader)
 		nextPiece := GetPieceFromInput(reader)
 		g.Board.PrintBoard()
-		g.Play(x,y, *nextPiece)
+		g.Play(x, y, *nextPiece)
 	}
 
 	fmt.Println("Winning player:", g.CurrentPlayer)

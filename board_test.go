@@ -25,7 +25,7 @@ func TestSetPiece(t *testing.T) {
 		t.Errorf("failed to update board\n%v, Piece: %v", b, p.String())
 	}
 
-	err := b.SetPiece(4,4, &Piece{true, true, true, true,})
+	err := b.SetPiece(4, 4, &Piece{true, true, true, true})
 	if err == nil {
 		t.Error("expected err when setting piece outside of board bounds")
 	}
