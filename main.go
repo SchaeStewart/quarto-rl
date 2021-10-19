@@ -1,6 +1,7 @@
 package main
 
-
 func main() {
-	NewBoard()	
+	game := NewGame()
+
+	game.Loop()
 }

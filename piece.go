@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type Piece struct {
 	Tall   bool
@@ -65,6 +68,34 @@ func ShareAttributes(p1, p2, p3, p4 *Piece) bool {
 		return true
 	}
 	return false
+}
+
+func StringToPiece(in string) (*Piece, error) {
+	if len(in) != 4 {
+		return nil, errors.New("input must be four characters")
+	}
+	p := &Piece{}
+	if in[0] != 'T' && in[0] != 'S' {
+		return nil, errors.New("size must be T or S")
+	}
+	p.Tall = in[0] == 'T'
+
+	if in[1] != 'B' && in[1] != 'W' {
+		return nil, errors.New("color must be B or W")
+	}
+	p.Black = in[1] == 'B'
+
+	if in[2] != 'F' && in[2] != 'D' {
+		return nil, errors.New("top must be F or D")
+	}
+	p.Flat = in[2] == 'F'
+
+	if in[3] != 'R' && in[3] != 'C' {
+		return nil, errors.New("shape must be R or C")
+	}
+	p.Square = in[3] == 'R'
+
+	return p, nil
 }
 
 func CreatePieceSet() []Piece {
