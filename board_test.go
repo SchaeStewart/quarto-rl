@@ -1,6 +1,8 @@
 package main
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestNewBoard(t *testing.T) {
 	b := NewBoard()
@@ -80,5 +82,34 @@ func TestBoardWon(t *testing.T) {
 
 	if !b.IsWon() {
 		t.Errorf("expected board to be in a win state\n%v", b)
+	}
+}
+
+func TestBoardIsTied(t *testing.T) {
+	// A randomly created board with no win state
+	b := NewBoard()
+	// Row 1
+	b.SetPiece(0, 0, &Piece{Black: true, Flat: false, Tall: true, Square: true})
+	b.SetPiece(0, 1, &Piece{Black: false, Flat: true, Tall: false, Square: true})
+	b.SetPiece(0, 2, &Piece{Black: true, Flat: true, Tall: true, Square: true})
+	b.SetPiece(0, 3, &Piece{Black: false, Flat: false, Tall: true, Square: false})
+	// Row 2
+	b.SetPiece(1, 0, &Piece{Black: true, Flat: false, Tall: false, Square: true})
+	b.SetPiece(1, 1, &Piece{Black: false, Flat: true, Tall: true, Square: false})
+	b.SetPiece(1, 2, &Piece{Black: false, Flat: false, Tall: true, Square: true})
+	b.SetPiece(1, 3, &Piece{Black: true, Flat: true, Tall: true, Square: false})
+	// Row 3
+	b.SetPiece(2, 0, &Piece{Black: false, Flat: false, Tall: false, Square: true})
+	b.SetPiece(2, 1, &Piece{Black: true, Flat: false, Tall: true, Square: false})
+	b.SetPiece(2, 2, &Piece{Black: true, Flat: true, Tall: false, Square: true})
+	b.SetPiece(2, 3, &Piece{Black: true, Flat: true, Tall: false, Square: false})
+	// Row 4
+	b.SetPiece(3, 0, &Piece{Black: false, Flat: true, Tall: false, Square: false})
+	b.SetPiece(3, 1, &Piece{Black: false, Flat: false, Tall: false, Square: false})
+	b.SetPiece(3, 2, &Piece{Black: true, Flat: false, Tall: false, Square: false})
+	b.SetPiece(3, 3, &Piece{Black: false, Flat: true, Tall: true, Square: true}) 
+
+	if !b.IsTied() {
+		t.Errorf("expected board to be in a tied state\n%v", b)
 	}
 }

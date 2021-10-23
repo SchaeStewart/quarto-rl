@@ -59,6 +59,17 @@ func (bx *Board) IsWon() bool {
 	return false
 }
 
+func (b Board) IsTied() bool {
+	for i := range b {
+		for _, x := range b[i] {
+			if x == nil {
+				return false
+			}
+		}
+	}
+	return true
+}
+
 func (b Board) String() string {
 	result := ""
 	for _, x := range b {

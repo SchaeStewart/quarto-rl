@@ -165,7 +165,13 @@ func (g *Game) Loop(rd io.Reader) {
 		}
 		g.Board.PrintBoard()
 
-		if (g.Board.IsWon()) {
+		if g.Board.IsWon() {
+			fmt.Println("Winning player:", g.CurrentPlayer)
+			continue
+		}
+
+		if g.Board.IsTied() {
+			fmt.Println("Game tied")
 			continue
 		}
 
@@ -178,5 +184,4 @@ func (g *Game) Loop(rd io.Reader) {
 		g.IncrementPlayer()
 		g.Board.PrintBoard()
 	}
-	fmt.Println("Winning player:", g.CurrentPlayer)
 }
