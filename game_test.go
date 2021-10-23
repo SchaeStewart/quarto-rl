@@ -11,7 +11,7 @@ func TestGameLoop(t *testing.T) {
 
 	g := NewGame()
 	g.Loop(&stdin)
-	if g.CurrentPlayer != Player1 {
+	if g.CurrentPlayer != Player2 {
 		t.Error("expected Player1 to be the winner")
 	}
 }
@@ -27,7 +27,7 @@ func ExampleGame() {
 	// seem to swallow the next line in the output
 
 	// Output:
-	// Enter your piece (T|S, B|W, F|D, R|C): Current player: 1
+	// Enter your piece (T|S, B|W, F|D, R|C): Current player: 0
 	// Current piece: TBFR
 	// |0000|0000|0000|0000|
 	// |0000|0000|0000|0000|
@@ -41,7 +41,7 @@ func ExampleGame() {
 	// |0000|0000|0000|0000|
 	// |0000|0000|0000|0000|
 	// |0000|0000|0000|0000|
-	// Current player: 0
+	// Current player: 1
 	// Current piece: TBFC
 	// |TBFR|0000|0000|0000|
 	// |0000|0000|0000|0000|
@@ -55,7 +55,7 @@ func ExampleGame() {
 	// |0000|0000|0000|0000|
 	// |0000|0000|0000|0000|
 	// |0000|0000|0000|0000|
-	// Current player: 1
+	// Current player: 0
 	// Current piece: TBDR
 	// |TBFR|TBFC|0000|0000|
 	// |0000|0000|0000|0000|
@@ -69,7 +69,7 @@ func ExampleGame() {
 	// |0000|0000|0000|0000|
 	// |0000|0000|0000|0000|
 	// |0000|0000|0000|0000|
-	// Current player: 0
+	// Current player: 1
 	// Current piece: TBDC
 	// |TBFR|TBFC|TBDR|0000|
 	// |0000|0000|0000|0000|
@@ -79,7 +79,7 @@ func ExampleGame() {
 	// |0000|0000|0000|0000|
 	// |0000|0000|0000|0000|
 	// |0000|0000|0000|0000|
-	// Winning player: 0
+	// Winning player: 1
 	//
 }
 

@@ -62,11 +62,25 @@ func (g *Game) SelectPiece(p Piece) error {
 	g.CurrentPiece = &p
 	g.PlayedPieces = append(g.PlayedPieces, p)
 
+	for i, q := range g.Pieces {
+		if IsIdentical(p, q) {
+			g.Pieces = append(g.Pieces[:i], g.Pieces[i+1:]...)
+		}
+	}
+
+	g.IncrementPlayer()
+
 	return nil
 }
 
 func (g *Game) PrintBoard() {
 	g.Board.PrintBoard()
+}
+
+func (g *Game) Print() {
+	fmt.Println("Current player:", g.CurrentPlayer)
+	fmt.Println("Current piece:", g.CurrentPiece)
+	g.PrintBoard()
 }
 
 func (g *Game) IncrementPlayer() {
@@ -75,22 +89,6 @@ func (g *Game) IncrementPlayer() {
 		return
 	}
 	g.CurrentPlayer = Player1
-}
-
-func (g *Game) Play(x, y int, nextPiece Piece) error {
-	if err := g.PlayPiece(x, y); err != nil {
-		return err
-	}
-	if err := g.SelectPiece(nextPiece); err != nil {
-		return err
-	}
-
-	if g.Board.IsWon() {
-		return nil
-	}
-
-	g.IncrementPlayer()
-	return nil
 }
 
 func (g *Game) Loop(rd io.Reader) {
@@ -102,7 +100,6 @@ func (g *Game) Loop(rd io.Reader) {
 		return
 	}
 	g.CurrentPiece = piece
-	g.IncrementPlayer()
 
 	for !g.Board.IsWon() {
 		// Start turn
@@ -134,7 +131,6 @@ func (g *Game) Loop(rd io.Reader) {
 			fmt.Println(err.Error())
 			continue
 		}
-		g.IncrementPlayer()
 		g.Board.PrintBoard()
 	}
 }
@@ -184,4 +180,8 @@ func GetLocationFromInput(reader *bufio.Reader) (x, y int) {
 	}
 
 	return int(x64), int(y64)
+}
+
+func (g *Game) IsFinished () bool {
+	return g.Board.IsTied() || g.Board.IsWon()
 }
