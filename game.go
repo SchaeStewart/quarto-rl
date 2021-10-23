@@ -93,6 +93,52 @@ func (g *Game) Play(x, y int, nextPiece Piece) error {
 	return nil
 }
 
+func (g *Game) Loop(rd io.Reader) {
+	reader := bufio.NewReader(rd)
+	// TODO: put setting initial piece into function
+	piece := GetPieceFromInput(reader)
+	if piece == nil {
+		fmt.Println("exiting game")
+		return
+	}
+	g.CurrentPiece = piece
+	g.IncrementPlayer()
+
+	for !g.Board.IsWon() {
+		// Start turn
+		fmt.Println("Current player:", g.CurrentPlayer)
+		fmt.Println("Current piece:", g.CurrentPiece)
+		g.Board.PrintBoard()
+
+		// Play piece
+		x, y := GetLocationFromInput(reader)
+		if err := g.PlayPiece(x, y); err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
+		g.Board.PrintBoard()
+
+		if g.Board.IsWon() {
+			fmt.Println("Winning player:", g.CurrentPlayer)
+			continue
+		}
+
+		if g.Board.IsTied() {
+			fmt.Println("Game tied")
+			continue
+		}
+
+		// Select next piece
+		nextPiece := GetPieceFromInput(reader)
+		if err := g.SelectPiece(*nextPiece); err != nil {
+			fmt.Println(err.Error())
+			continue
+		}
+		g.IncrementPlayer()
+		g.Board.PrintBoard()
+	}
+}
+
 func GetPieceFromInput(reader *bufio.Reader) *Piece {
 	fmt.Print("Enter your piece (T|S, B|W, F|D, R|C): ")
 	pieceStr, err := reader.ReadString('\n')
@@ -138,50 +184,4 @@ func GetLocationFromInput(reader *bufio.Reader) (x, y int) {
 	}
 
 	return int(x64), int(y64)
-}
-
-func (g *Game) Loop(rd io.Reader) {
-	reader := bufio.NewReader(rd)
-	// TODO: put setting initial piece into function
-	piece := GetPieceFromInput(reader)
-	if piece == nil {
-		fmt.Println("exiting game")
-		return
-	}
-	g.CurrentPiece = piece
-	g.IncrementPlayer()
-
-	for !g.Board.IsWon() {
-		// Start turn
-		fmt.Println("Current player:", g.CurrentPlayer)
-		fmt.Println("Current piece:", g.CurrentPiece)
-		g.Board.PrintBoard()
-
-		// Play piece
-		x, y := GetLocationFromInput(reader)
-		if err := g.PlayPiece(x, y); err != nil {
-			fmt.Println(err.Error())
-			continue
-		}
-		g.Board.PrintBoard()
-
-		if g.Board.IsWon() {
-			fmt.Println("Winning player:", g.CurrentPlayer)
-			continue
-		}
-
-		if g.Board.IsTied() {
-			fmt.Println("Game tied")
-			continue
-		}
-
-		// Select next piece
-		nextPiece := GetPieceFromInput(reader)
-		if err := g.SelectPiece(*nextPiece); err != nil {
-			fmt.Println(err.Error())
-			continue
-		}
-		g.IncrementPlayer()
-		g.Board.PrintBoard()
-	}
 }
