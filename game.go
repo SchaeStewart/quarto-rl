@@ -177,7 +177,6 @@ func (g *Game) Loop(rd io.Reader) {
 		}
 		g.IncrementPlayer()
 		g.Board.PrintBoard()
-		fmt.Println(g.Board.IsWon())
 	}
 	fmt.Println("Winning player:", g.CurrentPlayer)
 }
