@@ -5,6 +5,11 @@ import (
 	"fmt"
 )
 
+type BoardLocation struct {
+	X,
+	Y int
+}
+
 type Board [][]*Piece
 
 func NewBoard() Board {
@@ -84,4 +89,16 @@ func (b Board) String() string {
 
 func (b Board) PrintBoard() {
 	fmt.Print(b)
+}
+
+func (b Board) FreeSpaces() []BoardLocation {
+	result := make([]BoardLocation, 0)
+	for x := range b {
+		for y, p := range b[x] {
+			if p == nil {
+				result = append(result, BoardLocation{x,y})
+			}
+		}
+	}
+	return result
 }
